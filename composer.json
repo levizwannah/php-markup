@@ -4,7 +4,6 @@
     "keywords": ["php to html", "php", "html", "markup generation"],
     "type": "library",
     "license": "MIT",
-    "version": "1.0.0",
     "autoload": {
         "psr-4": {
             "LeviZwannah\\Php2html\\": "src/"
