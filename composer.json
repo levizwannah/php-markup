@@ -1,0 +1,20 @@
+{
+    "name": "levizwannah/php2html",
+    "description": "Allows you to Write HTML using PHP in an elegant manner. And the result is a clean formatted html.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "LeviZwannah\\Php2html\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Levi Kamara Zwannah",
+            "email": "levizwannah@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4"
+    }
+}
