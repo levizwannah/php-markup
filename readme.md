@@ -37,7 +37,7 @@ For attributes that contains dash(-) in their names, replace all dashes with und
 Any name without an `_` will be treated as an HTML element. This means, you can even create your own HTML elements. There is no limit. For example 
 `::random()::_id("random1")::__text("A Text here")::random(1);` will generate an html markup: `<random id="random1">A Text here</random>`.  
 
-To close a previously opened tag, pass 1 as the argument to the open tag's function. For example, `::p()::text("Hello")::p(1)`. Notice the `::p(1)`.
+To close a previously opened tag, pass 1 as the argument to the open tag's function. For example, `::p()::__text("Hello")::p(1)`. Notice the `::p(1)`.
 
 ## The __text() Function
 Use this function to put text/markup/code/string between opening and closing tags.
