@@ -14,8 +14,8 @@ use LeviZwannah\Php2html\Facades\Html as H;
 
 H::div()
     ::p()::_id("p1")
-        ::text("Hello PHP2HTML From Paragraph")
-        ::b()::text("A Bold Text")::b(1)
+        ::__text("Hello PHP2HTML From Paragraph")
+        ::b()::__text("A Bold Text")::b(1)
     ::p(1)
 ::div(1)
 
@@ -28,16 +28,16 @@ H::div()
 ## HTML Attributes
 Use underscore(`_`) before the name of the function to tell the library
 that it is an attribute. The argument passed to the function is the attribute's value. For example, `_id("p1")` generates `id="p1"`.
-> Note: Everything is possible. `_data_phone("num")` will generate and attribute `data-phone="num"`. You can write anything, and it will be converted to markup. The library makes to presumptions of what you will write.
+> Note: Everything is possible. `_data_phone("num")` will generate an attribute `data-phone="num"`. You can write anything, and it will be converted to markup. The library makes no presumptions of what you will write.
 
 ### HTML Attributes with dash(-)
 For attributes that contains dash(-) in their names, replace all dashes with underscores(_). For example, `http-equiv="X-UA-Compatible"` will be `::_http_equiv("X-UA-Compatible")` 
 
 ## HTML Element
 Any name without an `_` will be treated as an HTML element. This means, you can even create your own HTML elements. There is no limit. For example 
-`::random()::_id("random1")::text("A Text here")::random(1);` will generate an html markup: `<random id="random1">A Text here</random>`.  
+`::random()::_id("random1")::__text("A Text here")::random(1);` will generate an html markup: `<random id="random1">A Text here</random>`.  
 
-To close a previously opened tag, pass 1 as the argument to the open tag's function. For example, `::p()::text("Hello")::p(1)`. Notice the `::p(1)`.
+To close a previously opened tag, pass 1 as the argument to the open tag's function. For example, `::p()::__text("Hello")::p(1)`. Notice the `::p(1)`.
 
 ## The __text() Function
 Use this function to put text/markup/code/string between opening and closing tags.
@@ -47,7 +47,7 @@ Adds the famous `<!DOCTYPE html>` to your markup.
 
 ## The __end() function
 Prints the html markup and empties the buffer. All unclosed HTML tags will be closed.
-> Warning: Call this at the end of the file. Otherwise, use __pause() if your want to run a php code in between markup generation.
+> Warning: Call this at the end of the file. Otherwise, use __pause() if you want to run a php code in between markup generation.
 
 ## The __pause() function
 Prints out the current generated markup without closing opened tags. This allows you to run a php code in between markup generation. For example,
