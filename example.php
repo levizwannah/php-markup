@@ -1,7 +1,7 @@
 <?php
 require (__DIR__ . "/vendor/autoload.php");
 
-use LeviZwannah\Php2html\Facades\Html as H;
+use LeviZwannah\PhpMarkup\Facades\Markup as H;
 
 H::__html5() // echo <!DOCTYPE html>
 

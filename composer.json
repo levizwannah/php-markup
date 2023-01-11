@@ -1,12 +1,12 @@
 {
-    "name": "levizwannah/php2html",
+    "name": "levizwannah/php-markup",
     "description": "Allows you to Write HTML using PHP in an elegant manner. And the result is a clean formatted html markup.",
     "keywords": ["php to html", "php", "html", "markup generation"],
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "LeviZwannah\\Php2html\\": "src/"
+            "LeviZwannah\\PhpMarkup\\": "src/"
         }
     },
     "authors": [
@@ -16,12 +16,12 @@
         }
     ],
     "require": {
-        "php": ">=7.4"
+        "php": ">=8.0.0"
     },
-    "homepage": "https://github.com/levizwannah/php2html",
+    "homepage": "https://github.com/levizwannah/php-markup",
     "support": {
-        "issues": "https://github.com/levizwannah/php2html/issues",
-        "source": "https://github.com/levizwannah/php2html"
+        "issues": "https://github.com/levizwannah/php-markup/issues",
+        "source": "https://github.com/levizwannah/php-markup"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

@@ -1,5 +1,5 @@
 <?php
-namespace LeviZwannah\Php2html\Facades;
+namespace LeviZwannah\PhpMarkup\Facades;
 
 
 abstract class AbstractFacade{
@@ -26,9 +26,7 @@ abstract class AbstractFacade{
 
         $instance = self::$instances[$class];
 
-        $instance->$name(...$arguments);
-
-        return static::class;
+        return $instance->$name(...$arguments);
     }
 }
 

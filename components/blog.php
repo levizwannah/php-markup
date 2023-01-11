@@ -1,11 +1,10 @@
 <?php
 
-use LeviZwannah\Php2html\Facades\Html as h;
-
+use LeviZwannah\PhpMarkup\Facades\Markup as h;
 
 h::make(
-    $name = "blog",
-    $logic = function(...$args){
+    name: "blog",
+    logic: function(...$args){
 
         return h::div(
 

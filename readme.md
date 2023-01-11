@@ -1,16 +1,16 @@
-# PHP2HTML
+# PHP-Markup
 Php2html is a library that converts your php code to HTML. You don't need to close and open php tags anymore to write html. The library is expressive and supports every HTML component, tags, and attributes... and even your own elements as long as you follow the rules.
 
 # Usage
 You can use this to embed html markup in a php file (among other html markups) or just write the whole markup using the library as shown in `example.php`.
 
 # Syntax
-Use the `Html` Facade which is located in `LeviZwannah\Php2html\Facades` for elegant writing.
+Use the `Html` Facade which is located in `LeviZwannah\PhpMarkup\Facades` for elegant writing.
 
 ```
 <?php
 
-use LeviZwannah\Php2html\Facades\Html as H;
+use LeviZwannah\PhpMarkup\Facades\Html as H;
 
 H::div()
     ::p()::_id("p1")

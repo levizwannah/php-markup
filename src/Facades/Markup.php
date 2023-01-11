@@ -1,7 +1,7 @@
 <?php 
-namespace LeviZwannah\Php2html\Facades;
+namespace LeviZwannah\PhpMarkup\Facades;
 
-use LeviZwannah\Php2html\Html as Php2htmlHtml;
+use LeviZwannah\PhpMarkup\Html;
 
 /**
  * The Html Facade. Mainly use this as H, to reduce the writing
@@ -13,12 +13,12 @@ use LeviZwannah\Php2html\Html as Php2htmlHtml;
  * @method static Html <elem>()
  * @method static Html <elem>(int $close = 1) 
  */
-class Html extends AbstractFacade{
+class Markup extends AbstractFacade{
     
    
     public static function accessor()
     {
-        return Php2htmlHtml::class;
+        return Html::class;
     }
 }
 ?>
