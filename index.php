@@ -4,7 +4,7 @@ use LeviZwannah\PhpMarkup\Facades\Markup as h;
 
 require(__DIR__."/vendor/autoload.php");
 
-h::__html5();
+h::html5();
 
 h::html(
     

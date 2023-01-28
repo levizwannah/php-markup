@@ -30,8 +30,8 @@ class Html{
 
     public function __construct(){}
 
-    public function text(string $text){
-        return $text;
+    public function html5(){
+        echo $this::DOCTYPE;
     }
 
     public function exec(callable $function, ...$args){
@@ -43,12 +43,55 @@ class Html{
     }
 
     public function children(array $children){
-        
+        return implode("", $children);
     }
 
     public function __call($name, $arguments)
     {
-        print_r($arguments);
+
+        $attributes = [];
+        $children = "";
+        $attr = "";
+        $return = true;
+
+        foreach($arguments as $key => $value){
+
+            if(!is_numeric($key)){
+
+                if($key == 'print'){
+                    $return = !$value;
+                    continue;
+                }
+
+                if($key == 'children') {
+                    $children .= $this->children($value);
+                    continue;
+                }
+
+                $attr .= " \"$key\"=\"$value\"";
+                continue;
+            }
+
+            $children .= $value;
+        }
+
+        $openTag = "<$name$attr";
+        $closingTag = "</$name>";
+       
+        if(empty($children)){
+            $closingTag = "";
+            $openTag .= "/>";
+        }
+        else {
+            $openTag .= ">";
+            $closingTag = "</$name>";
+        }
+        $output = "$openTag$children$closingTag";
+
+        if($return) return $output;
+
+        echo "$openTag$children$closingTag";
+
     }
     
 }

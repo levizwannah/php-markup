@@ -1,10 +1,4 @@
-<?php 
-namespace LeviZwannah\PhpMarkup\Facades;
-
-use LeviZwannah\PhpMarkup\Html;
-
 /**
- * @method static string html5() adds the `<!DOCTYPE html>`
  * @method static string a(...$params) makes a `a` element
  * @method static string abbr(...$params) makes a `abbr` element
  * @method static string address(...$params) makes a `address` element
@@ -106,12 +100,3 @@ use LeviZwannah\PhpMarkup\Html;
  * @method static string video(...$params) makes a `video` element
  * @method static string wbr(...$params) makes a `wbr` element
  */
-class Markup extends AbstractFacade{
-    
-   
-    public static function accessor()
-    {
-        return Html::class;
-    }
-}
-?>
