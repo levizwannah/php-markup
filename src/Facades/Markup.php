@@ -5,6 +5,10 @@ use LeviZwannah\PhpMarkup\Html;
 
 /**
  * @method static string html5() adds the `<!DOCTYPE html>`
+ * @method static \LeviZwannah\PhpMarkup\Html make(string $name, \Closure $do) makes a
+ * component with a given name and a given logic.
+ * @method static string|void handle(string $name, array $arguments, bool $return = true) makes an html element with the given name and arguments.
+ * @method static \LeviZwannah\PhpMarkup\Html removeComponent(string $name) removes a current component
  * @method static string a(...$params) makes a `a` element
  * @method static string abbr(...$params) makes a `abbr` element
  * @method static string address(...$params) makes a `address` element

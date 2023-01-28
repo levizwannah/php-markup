@@ -1,30 +1,14 @@
 <?php 
 namespace LeviZwannah\PhpMarkup;
 
-use RuntimeException;
+use Closure;
 
 /**
  * Outputs an HTML string
  */
 class Html{
 
-    /**
-     * Elements stack
-     * @var array
-     */
-    private $elements = [];
-
-    /**
-     * Last string to close an open tag for efficiency reasons
-     * @var string
-     */
-    private $last = "";
-
-    /**
-     * The built html string
-     * @var string
-     */
-    private $__ = "";
+    protected $components = [];
 
     const DOCTYPE = "<!DOCTYPE html>";
 
@@ -38,8 +22,14 @@ class Html{
         return call_user_func_array($function, $args);
     }
 
-    public function make($name, $function, $args){
+    public function make($name, $do, $specialArgs = []){
+        $this->components[$name] = ['do' => $do, 'specialArgs' => $specialArgs];
+        return $this;
+    }
 
+    public function removeComponent($name){
+        unset($this->components[$name]);
+        return $this;
     }
 
     public function children(array $children){
@@ -49,36 +39,82 @@ class Html{
     public function __call($name, $arguments)
     {
 
-        $attributes = [];
-        $children = "";
-        $attr = "";
         $return = true;
 
+        if(isset($arguments['print'])) {
+            $return = !$arguments['print'];
+            unset($arguments['print']);
+        }
+
+        /**
+         * If we have this component registered, then we will pass
+         * the arguments to it instead of processing it ourself;
+         */
+
+        if(isset($this->components[$name])){
+            $specialArgs = $this->components[$name]['specialArgs'];
+            $special = [];
+
+            foreach($specialArgs as $a){
+                $special[$a] = $arguments[$a];
+                unset($arguments[$a]);
+            }
+
+            if($return) return $this->components[$name]['do']($special, $arguments);
+            echo $this->components[$name]['do']($special, $arguments);
+            return;
+        }
+
+        return $this->handle($name, $arguments, $return);
+
+    }
+
+    public function handle($name, $arguments, $return = true){
+
+        $children = "";
+        $attr = "";
+        $close = false;
+       
         foreach($arguments as $key => $value){
 
             if(!is_numeric($key)){
-
-                if($key == 'print'){
-                    $return = !$value;
-                    continue;
-                }
 
                 if($key == 'children') {
                     $children .= $this->children($value);
                     continue;
                 }
 
-                $attr .= " \"$key\"=\"$value\"";
+                if($key == 'text') {
+                    $children .= $value;
+                    continue;
+                }
+
+                if($key == 'close'){
+                    $close = $value;
+                    continue;
+                }
+
+                if($value instanceof Closure || is_callable($value)){
+                    $children .= $this->exec($value);
+                    continue;
+                }
+
+                $key = str_replace("_", "-", $key);
+                $attr .= " $key=\"$value\"";
                 continue;
             }
 
+            if(is_array($value)){
+                print_r($value);
+                continue;
+            }
             $children .= $value;
         }
 
         $openTag = "<$name$attr";
         $closingTag = "</$name>";
        
-        if(empty($children)){
+        if(empty($children) && !$close){
             $closingTag = "";
             $openTag .= "/>";
         }
@@ -86,12 +122,12 @@ class Html{
             $openTag .= ">";
             $closingTag = "</$name>";
         }
+
         $output = "$openTag$children$closingTag";
 
         if($return) return $output;
 
         echo "$openTag$children$closingTag";
-
     }
     
 }

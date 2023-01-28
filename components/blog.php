@@ -1,15 +1,25 @@
 <?php
 
-use LeviZwannah\PhpMarkup\Facades\Markup as h;
+use LeviZwannah\PhpMarkup\Facades\Markup as pm;
 
-h::make(
+pm::make(
     name: "blog",
-    logic: function(...$args){
+    do: function($mainArgs, $args){
+        $output = "";
 
-        return h::div(
+        $content = $mainArgs['content'];
 
-        );
-    } 
+        foreach($content as $blog){
+            $output .= pm::div(
+                "This is a div for $blog",
+                ...$args
+            );
+        }
+
+        return $output;
+    },
+    specialArgs: ['content']
 );
+
 
 ?>

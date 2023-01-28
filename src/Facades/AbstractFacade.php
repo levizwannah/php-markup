@@ -20,6 +20,7 @@ abstract class AbstractFacade{
     {
         $class = static::accessor();
 
+
         if(!isset(self::$instances[$class])){
             self::$instances[$class] = new $class();
         }

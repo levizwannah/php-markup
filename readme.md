@@ -1,82 +1,97 @@
 # PHP-Markup
-Php2html is a library that converts your php code to HTML. You don't need to close and open php tags anymore to write html. The library is expressive and supports every HTML component, tags, and attributes... and even your own elements as long as you follow the rules.
+PHP-Markup is a library that allows you to elegantly write html markup with PHP. The library allows you to make component, composite elements, and even overwrite the default html tag. Imagine if you want every `p` element to have some default class, you can overwrite the normal `p` element using this library to save you much of the work, keeping things clean and elegant.
 
 # Usage
-You can use this to embed html markup in a php file (among other html markups) or just write the whole markup using the library as shown in `example.php`.
+You can use this library to write a whole markup or put HTML markup within PHP code without opening and closing the PHP tags.
 
 # Syntax
-Use the `Html` Facade which is located in `LeviZwannah\PhpMarkup\Facades` for elegant writing.
+Use the `Markup` Facade which is located in `LeviZwannah\PhpMarkup\Facades` for elegant writing.
 
-```
+```php
 <?php
 
-use LeviZwannah\PhpMarkup\Facades\Html as H;
+use LeviZwannah\PhpMarkup\Facades\Markup as pm;
 
-H::div()
-    ::p()::_id("p1")
-        ::__text("Hello PHP2HTML From Paragraph")
-        ::b()::__text("A Bold Text")::b(1)
-    ::p(1)
-::div(1)
+pm::div(
+    class: 'mb-2',
+    id: 'div-id'
+    children: [
+        pm::p('This is a paragraph a child of div')
+    ],
+    print: true
+);
 
-::__end();
+?> 
+```  
+
+## HTML Attributes
+HTML attributes can be added using the named parameter feature of PHP. For example, you can see the `id` field in the above demonstration.
+
+### HTML Attributes with dash(-)
+For attributes that contains dash(-) in their names, replace all dashes with underscores(_). For example, `http-equiv="X-UA-Compatible"` will be `http_equiv: "X-UA-Compatible"` 
+
+### Child Elements
+If you put the children elements before the attributes, then you don't have to put the children element in the `children` array. However, if the children element come after the attributes, then you must put them in the `children` array. For example,
+
+**Children First**
+```php
+<?php
+
+use LeviZwannah\PhpMarkup\Facades\Markup as pm;
+
+pm::div(
+    pm::p('This is a paragraph a child of div'), // child first,
+    pm::div(
+        'Inner Text for div',
+        pm::span('A span elem')
+    ),
+    class: 'mb-2', // then attributes
+    id: 'div-id'
+    print: true
+);
 
 ?> 
 ```
-> Note: functions with double underscores `__` belong to the `php2html` library.  
 
-## HTML Attributes
-Use underscore(`_`) before the name of the function to tell the library
-that it is an attribute. The argument passed to the function is the attribute's value. For example, `_id("p1")` generates `id="p1"`.
-> Note: Everything is possible. `_data_phone("num")` will generate an attribute `data-phone="num"`. You can write anything, and it will be converted to markup. The library makes no presumptions of what you will write.
+**Children last**
+```php
+<?php
 
-### HTML Attributes with dash(-)
-For attributes that contains dash(-) in their names, replace all dashes with underscores(_). For example, `http-equiv="X-UA-Compatible"` will be `::_http_equiv("X-UA-Compatible")` 
+use LeviZwannah\PhpMarkup\Facades\Markup as pm;
 
-## HTML Element
-Any name without an `_` will be treated as an HTML element. This means, you can even create your own HTML elements. There is no limit. For example 
-`::random()::_id("random1")::__text("A Text here")::random(1);` will generate an html markup: `<random id="random1">A Text here</random>`.  
+pm::div(
+    class: 'mb-2', // then attributes
+    id: 'div-id',
+    children: [
+        pm::p('This is a paragraph a child of div'), // child first,
+        pm::div(
+            'Inner Text for div',
+            pm::span('A span elem')
+        ),
+    ]
+    print: true
+);
 
-To close a previously opened tag, pass 1 as the argument to the open tag's function. For example, `::p()::__text("Hello")::p(1)`. Notice the `::p(1)`.
-
-## The __text() Function
-Use this function to put text/markup/code/string between opening and closing tags.
-
-## The __html5() Function
-Adds the famous `<!DOCTYPE html>` to your markup.
-
-## The __end() function
-Prints the html markup and empties the buffer. All unclosed HTML tags will be closed.
-> Warning: Call this at the end of the file. Otherwise, use __pause() if you want to run a php code in between markup generation.
-
-## The __pause() function
-Prints out the current generated markup without closing opened tags. This allows you to run a php code in between markup generation. For example,
+?> 
 ```
-...
-::div()::_class("container", "card", "m-3") // opens div
-    ::__pause(); // prints the current markup
 
-    foreach([1, 2, 3, 4, 5] as $num){
-        H::p()::_id("random-$num")
-            ::__text("Random Text Here Number $num ")
-        ::p(1)
-        ::__pause(); //prints the current markup
-    }
+## HTML Elements
+The library is agnostic to html elements, only defining few functions that cannot be made HTML elements. Everything you write is taken as a markup element. For example, `pm::random(id: '1')` will create an element `<random id='1' />`. Therefore, you can do wonders here. However, few functions won't return elements. They are as follows:
+1. make -- makes a component
+2. removeComponent -- remove a component
+3. children -- parses children
+4. exec -- executes a function
 
-H::div(1) // closes div
-...
-...
 
-H::end(); // prints all the remaining markups and closes open tags.
-```
 
 ## Self-Closing tags
-Just follow the formats of opening and closing elements. If there is no inner text in the, the library will handle self-closing tags.
+Tags without children or text in-between their opening and closing tag are self-closing automatically.
+> Note: The library is agnostic to html elements, so if you know a tag should close but has no children, inform the markup engine through the `closing: true` parameter. For example, `script` tags that do not have inner code (but have src).
 
 
 # Installation
 From Composer
-`composer require levizwannah/php2html`
+`composer require levizwannah/php-markup`
 
 # Finally,
 You will like this! But the `Html` object is a singleton🏃‍♂️🏃‍♂️ for memory sake.
