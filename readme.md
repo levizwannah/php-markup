@@ -133,7 +133,7 @@ pm::div(
     exec1: function(){
         return '... Some function executes here then...'
     },
-    children1: [
+    children2: [
         pm::p(
             id: 'p-3',
             class: 'p-class',
