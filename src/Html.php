@@ -127,7 +127,7 @@ class Html{
 
         if($return) return $output;
 
-        echo "$openTag$children$closingTag";
+        echo $output;
     }
     
 }
