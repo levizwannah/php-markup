@@ -79,12 +79,12 @@ class Html{
 
             if(!is_numeric($key)){
 
-                if($key == 'children') {
+                if($key == 'children' || preg_match("/^children\d*/", $key)) {
                     $children .= $this->children($value);
                     continue;
                 }
 
-                if($key == 'text') {
+                if($key == 'text' || preg_match("/^text\d*/", $key)) {
                     $children .= $value;
                     continue;
                 }
