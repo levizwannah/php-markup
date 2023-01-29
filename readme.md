@@ -33,7 +33,7 @@ For attributes that contains dash(-) in their names, replace all dashes with und
 ### Child Elements
 If you put the children elements before the attributes, then you don't have to put the children element in the `children` array. However, if the children element come after the attributes, then you must put them in the `children` array. For example,
 
-**Children First**
+**Children Before Attributes**
 ```php
 <?php
 
@@ -53,7 +53,7 @@ pm::div(
 ?> 
 ```
 
-**Children last**
+**Children After An Attribute**
 ```php
 <?php
 
@@ -81,13 +81,93 @@ The library is agnostic to html elements, only defining few functions that canno
 2. removeComponent -- remove a component
 3. children -- parses children
 4. exec -- executes a function
-
-
+5. handle -- the underlying function that creates tags
 
 ## Self-Closing tags
 Tags without children or text in-between their opening and closing tag are self-closing automatically.
 > Note: The library is agnostic to html elements, so if you know a tag should close but has no children, inform the markup engine through the `closing: true` parameter. For example, `script` tags that do not have inner code (but have src).
 
+## Special Parameters
+1. `close` - a boolean attribute that tells the library to create a closing tag for the current element. ***The Library will automatically make elements with no inner html self-closing***. This behavior is not good for elements like `script` which could not have any inner content. Hence, to force close an empty element, pass the `close: true` parameter to the element.
+2. `text{number}` - the value of this parameter will be consider as an inner text of the element. ***Please note that the position of this parameter will be respected when making the inner html of the created element.*** for example, `pm::div(id: 'div-1', text: 'hello div')`; However, you don't need to use the `text` parameter. You can just pass the string value and it will be considered as an inner content of the div. for example `pm:div(id: 'div-1', "hello div")`.
+3. `print` - this is a boolean parameter that tells the engine to print out the content of this tag. By default, it will be returned. So, you should put the print in the most outer tag of your markup. For example, the `html` tag. See below,
+```php
+pm::html(
+    ...$args,
+    print: true
+);
+```
+4. `exec{number}` - the value of this attribute is a function that must return a string. the exec function tells the underlying engine to execute this function and put it's content as in inner html of the current div. The `{number}` represents a count of the functions to execute. This is because you may want to execute multiple functions during an element creation. Hence, you can have `exec`, `exec1`, `exec2`, ..., `execN`, in an element. ***Note that the position of the function will match the position at which it's content will be placed in the inner html of the current element.***
+5. `children{number}` - this is an array of inner html. Every element in the children array should not pass the `print` parameter, else they will be printed before the element gets created. The `{number}` allows you to have multiple `children` parameters during an element creation. for example, you can have `children`, `children1`, `children2`, ... , `childrenN`. ***Remember this is an array of inner html. So don't think you need to have children1, children2, etc, you can only use one and pass all your inner html elements.***. Another thing to note is that, the position of elements in the `children` array is followed when adding the inner elements to the created element. Example
+```html
+<div class='div' id='div-1'>
+    <p id='p-1' class='p-class'>This is the first Paragraph</p>
+    This is some text
+    <p id='p-2' class='p-class'>This is the second paragraph</p>
+
+    ... some function executes here then...
+
+    <p id='p-3' class='p-class'> This is the third paragraph</p>
+    <span id='span-1'>This is a span</p>
+</div>
+
+```
+**is equivalent to**
+```php 
+pm::div(
+    id: 'div-1',
+    class: 'div',
+    children1: [
+        pm::p(
+            id: 'p-1'
+            class: 'p-class',
+            text: 'This is the first paragraph'
+        ),
+        "This is some text", // position is observed
+        pm::p(
+            id: 'p-2',
+            class: 'p-class',
+            text: 'This is the second paragraph'
+        )
+    ],
+    exec1: function(){
+        return '... Some function executes here then...'
+    },
+    children1: [
+        pm::p(
+            id: 'p-3',
+            class: 'p-class',
+            text: 'This is the third paragraph'
+        ),
+        pm::span(
+            id: 'span-1',
+            text: 'This is a span'
+        )
+    ],
+
+    print: true // print out this div
+);
+```
+
+## Components
+With the `make` function, it is easier to make your own component. This function allows you to make a component or overwrite the default behavior of normal html elements.
+*definition:*
+```php
+make(string $name, \Closure $do, array $specialArgs = []): self
+```
+1. `name: string` - the unique name of the element. For example `mainNav`, or `blogList`, etc.
+2. `do: \Closure -- returns string` - the function to execute when this component is called. For example, `pm::blogList(...$args)`. This function takes two arguments. The first is an array of special arguments as specified by `specialArgs` params. The second parameter is an array of the remaining arguments. e.g, class, id, children, etc.
+3. `specialArgs: array` - the names of special arguments that the function needs to execute some special logic. When the component is being created, the engine will extract the special params and pass it to the `do` function. For example, if the `blogList` component expects an array called blogs, then when this component will be called like this,
+```php
+pm::blogList(
+    class: 'some-class'
+    blogs: $array,
+    data_name: 'some data attribute'
+)
+```
+In the above case, the `specialArgs` will be `['blogs']`. Hence when the `blogList` is called, we will call, do(`['blogs' => $array]`, `['class' => 'some-class', 'data-name' => 'some data attribute']`). 
+
+### Making your own components
 
 # Installation
 From Composer
