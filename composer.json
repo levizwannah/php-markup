@@ -1,7 +1,7 @@
 {
     "name": "levizwannah/php-markup",
     "description": "Allows you to Write HTML using PHP in an elegant manner. And the result is a clean formatted html markup.",
-    "keywords": ["php to html", "php", "html", "markup generation"],
+    "keywords": ["php to html", "php markup", "php", "html", "markup generation"],
     "type": "library",
     "license": "MIT",
     "autoload": {

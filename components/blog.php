@@ -2,9 +2,9 @@
 
 use LeviZwannah\PhpMarkup\Facades\Markup as pm;
 
-pm::make(
+pm::component(
     name: "blog",
-    do: function($mainArgs, $args){
+    render: function($mainArgs, $args){
         $output = "";
 
         $content = $mainArgs['content'];

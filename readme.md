@@ -77,7 +77,7 @@ pm::div(
 
 ## HTML Elements
 The library is agnostic to html elements, only defining few functions that cannot be made HTML elements. Everything you write is taken as a markup element. For example, `pm::random(id: '1')` will create an element `<random id='1' />`. Therefore, you can do wonders here. However, few functions won't return elements. They are as follows:
-1. make -- makes a component
+1. component -- makes a component
 2. removeComponent -- remove a component
 3. children -- parses children
 4. exec -- executes a function
@@ -153,10 +153,10 @@ pm::div(
 With the `make` function, it is easier to make your own component. This function allows you to make a component or overwrite the default behavior of normal html elements.
 *definition:*
 ```php
-make(string $name, \Closure $do, array $specialArgs = []): self
+component(string $name, \Closure $render, array $specialArgs = []): self
 ```
 1. `name: string` - the unique name of the element. For example `mainNav`, or `blogList`, etc.
-2. `do: \Closure -- returns string` - the function to execute when this component is called. For example, `pm::blogList(...$args)`. This function takes two arguments. The first is an array of special arguments as specified by `specialArgs` params. The second parameter is an array of the remaining arguments. e.g, class, id, children, etc.
+2. `render: \Closure -- returns string` - the function to execute when this component is called. For example, `pm::blogList(...$args)`. This function takes two arguments. The first is an array of special arguments as specified by `specialArgs` params. The second parameter is an array of the remaining arguments. e.g, class, id, children, etc.
 3. `specialArgs: array` - the names of special arguments that the function needs to execute some special logic. When the component is being created, the engine will extract the special params and pass it to the `do` function. For example, if the `blogList` component expects an array called blogs, then when this component will be called like this,
 ```php
 pm::blogList(
@@ -165,9 +165,74 @@ pm::blogList(
     data_name: 'some data attribute'
 )
 ```
-In the above case, the `specialArgs` will be `['blogs']`. Hence when the `blogList` is called, we will call, do(`['blogs' => $array]`, `['class' => 'some-class', 'data-name' => 'some data attribute']`). 
+In the above case, the `specialArgs` will be `['blogs']`. Hence when the `blogList` is called, we will call, render(`['blogs' => $array]`, `['class' => 'some-class', 'data-name' => 'some data attribute']`). 
 
 ### Making your own components
+To keep your components organized, put them in separate files, or in a single one, in a specific folder. Even better, you can put them in a class and use autoload to load them when necessary.  
+
+In this example, a structural approach is taken to demonstrate creating a component.
+
+### creating the component
+```php
+# blog.php
+use LeviZwannah\PhpMarkup\Facades\Markup as pm;
+
+pm::component(
+    name: "blog",
+    render: function($mainArgs, $args){
+        $output = "";
+
+        $content = $mainArgs['content'];
+
+        foreach($content as $blog){
+            $output .= pm::div(
+                "This is a div for $blog",
+                ...$args
+            );
+        }
+
+        return $output;
+    },
+    specialArgs: ['content']
+);
+```
+### using the component
+```php
+# index.php
+h::div(
+    class : "container card m-3 w-full",
+  
+    # ...
+
+    children: [
+        h::blog(
+            h::h1("Hello There"),
+            class: 'p-4 m-2',
+            content: $blogArray
+        )
+    ] 
+),
+```
+
+### output 
+>(remember this uses bootstrap for styling)
+```html
+<div class="p-4 m-2">
+    This is a div for Hello There
+    <h1>Hello There</h1>
+</div>
+<div class="p-4 m-2">
+    This is a div for This is blog 2
+    <h1>Hello There</h1>
+</div>
+<div class="p-4 m-2">
+    This is a div for This is blog 3
+    <h1>Hello There</h1>
+</div>
+```
+
+
+
 
 # Installation
 From Composer

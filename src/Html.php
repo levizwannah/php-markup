@@ -22,8 +22,8 @@ class Html{
         return call_user_func_array($function, $args);
     }
 
-    public function make($name, $do, $specialArgs = []){
-        $this->components[$name] = ['do' => $do, 'specialArgs' => $specialArgs];
+    public function component($name, $render, $specialArgs = []){
+        $this->components[$name] = ['render' => $render, 'specialArgs' => $specialArgs];
         return $this;
     }
 
@@ -60,8 +60,8 @@ class Html{
                 unset($arguments[$a]);
             }
 
-            if($return) return $this->components[$name]['do']($special, $arguments);
-            echo $this->components[$name]['do']($special, $arguments);
+            if($return) return $this->components[$name]['render']($special, $arguments);
+            echo $this->components[$name]['render']($special, $arguments);
             return;
         }
 
