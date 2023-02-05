@@ -248,6 +248,18 @@ will produce an output
 The main benefit of this is that you can define any html element to behave the way you want. The main logic under this is the `handle` method which does the actual rendering. 
 > When redefining the behavior of an element, do not call the element as a function in its own definition, this can result in an infinite recursion.
 
+*Definition of the handle function*
+```php
+/**
+ * @param string $name - The name of the element
+ * @param array $args - The list of arguments passed to the function
+ * during creation. For example pm::div(...args)
+ * @param bool $return - should the created string be printed or
+ * returned?
+ */
+handle(string $name, array $args, bool $return = true)
+```
+
 **Redefining the `<p>` element**
 ```php
 # custom-tags.php
@@ -269,7 +281,7 @@ pm::component(
 );
 ```
 
-**Whenevery `pm::p(...)` is called, your custom definition will be the default behavior of the p tag**.
+**Whenevery `pm::p(...)` is called, your custom definition will be the default behavior of the `p` tag**.
 
 
 # Installation
