@@ -231,7 +231,45 @@ h::div(
 </div>
 ```
 
+# Overwriting Normal HTML Tags
+Firstly, this library is markup agnostic. That means, whatsoever you call will be considered as a markup. For example,
+```php
+h::you(
+    class: 'you-class',
+    id: 'you-1',
+    text: 'Hello you'
+);
+```
+will produce an output
+```html
+<you class="you-class" id="you-1">Hello you</you>
+```  
 
+The main benefit of this is that you can define any html element to behave the way you want. The main logic under this is the `handle` method which does the actual rendering. 
+> When redefining the behavior of an element, do not call the element as a function in its own definition, this can result in an infinite recursion.
+
+**Redefining the `<p>` element**
+```php
+# custom-tags.php
+use LeviZwannah\PhpMarkup\Facades\Markup as pm;
+
+pm::component(
+    name: "p",
+    render: function($mainArgs, $args){
+        # add more classes to p
+        $classes = $args['class'] ?? "";
+        $classes = "custom-p-class $classes custom-p-class-2";
+        $args['class'] = $classes;
+
+        # you could even put the p in a div by default.
+
+        return pm::handle('p', $args);
+    },
+    specialArgs: []
+);
+```
+
+**Whenevery `pm::p(...)` is called, your custom definition will be the default behavior of the p tag**.
 
 
 # Installation
