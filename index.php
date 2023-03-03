@@ -40,6 +40,8 @@ h::html(
 
     h::body(
         class: "body-class",
+        id: "body-1",
+        data_url_key: "body-call",
         children: [
 
             h::div(
@@ -52,6 +54,11 @@ h::html(
                     ),
     
                     h::div(
+                        h::hope(
+                            id: "hope-1",
+                            class: "hope-is-good d-block border-1 rounded",
+                            text: "Everyone needs hope"
+                        ),
                         h::p(
                             h::b("This is bold"),
                             "Text from another paragraph",

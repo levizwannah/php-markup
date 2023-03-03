@@ -150,14 +150,14 @@ pm::div(
 ```
 
 ## Components
-With the `make` function, it is easier to make your own component. This function allows you to make a component or overwrite the default behavior of normal html elements.
+With the `component` function, it is easier to make your own component. This function allows you to make a component or overwrite the default behavior of normal html elements.
 *definition:*
 ```php
 component(string $name, \Closure $render, array $specialArgs = []): self
 ```
 1. `name: string` - the unique name of the element. For example `mainNav`, or `blogList`, etc.
 2. `render: \Closure -- returns string` - the function to execute when this component is called. For example, `pm::blogList(...$args)`. This function takes two arguments. The first is an array of special arguments as specified by `specialArgs` params. The second parameter is an array of the remaining arguments. e.g, class, id, children, etc.
-3. `specialArgs: array` - the names of special arguments that the function needs to execute some special logic. When the component is being created, the engine will extract the special params and pass it to the `do` function. For example, if the `blogList` component expects an array called blogs, then when this component will be called like this,
+3. `specialArgs: array` - the names of special arguments that the function needs to execute some special logic. When the component is being created, the engine will extract the special params and pass it to the `render` function. For example, if the `blogList` component expects an array called blogs, then when this component will be called like this,
 ```php
 pm::blogList(
     class: 'some-class'
@@ -165,7 +165,7 @@ pm::blogList(
     data_name: 'some data attribute'
 )
 ```
-In the above case, the `specialArgs` will be `['blogs']`. Hence when the `blogList` is called, we will call, render(`['blogs' => $array]`, `['class' => 'some-class', 'data-name' => 'some data attribute']`). 
+In the above case, the value of `specialArgs` will be `['blogs']`. Hence when the `blogList` is called, we will call, render(`['blogs' => $array]`, `['class' => 'some-class', 'data-name' => 'some data attribute']`). 
 
 ### Making your own components
 To keep your components organized, put them in separate files, or in a single one, in a specific folder. Even better, you can put them in a class and use autoload to load them when necessary.  
@@ -179,15 +179,15 @@ use LeviZwannah\PhpMarkup\Facades\Markup as pm;
 
 pm::component(
     name: "blog",
-    render: function($mainArgs, $args){
+    render: function($specialArgs, $args){
         $output = "";
 
-        $content = $mainArgs['content'];
+        $content = $specialArgs['content'];
 
         foreach($content as $blog){
             $output .= pm::div(
                 "This is a div for $blog",
-                ...$args
+                ...$args // pass the remaining args to the child div
             );
         }
 
@@ -196,7 +196,7 @@ pm::component(
     specialArgs: ['content']
 );
 ```
-### using the component
+### using the component we created
 ```php
 # index.php
 h::div(
@@ -267,7 +267,7 @@ use LeviZwannah\PhpMarkup\Facades\Markup as pm;
 
 pm::component(
     name: "p",
-    render: function($mainArgs, $args){
+    render: function($specialArgs, $args){
         # add more classes to p
         $classes = $args['class'] ?? "";
         $classes = "custom-p-class $classes custom-p-class-2";
@@ -281,7 +281,7 @@ pm::component(
 );
 ```
 
-**Whenevery `pm::p(...)` is called, your custom definition will be the default behavior of the `p` tag**.
+**Whenever `pm::p(...)` is called, your custom definition will be the default behavior of the `p` tag**.
 
 
 # Installation
