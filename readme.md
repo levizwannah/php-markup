@@ -179,7 +179,7 @@ use LeviZwannah\PhpMarkup\Facades\Markup as pm;
 
 pm::component(
     name: "blog",
-    render: function($specialArgs, $args){
+    render: function($specialArgs, $args, $after = []){
         $output = "";
 
         $content = $specialArgs['content'];
@@ -188,6 +188,7 @@ pm::component(
             $output .= pm::div(
                 "This is a div for $blog",
                 ...$args // pass the remaining args to the child div
+                after: $after
             );
         }
 
@@ -254,10 +255,12 @@ The main benefit of this is that you can define any html element to behave the w
  * @param string $name - The name of the element
  * @param array $args - The list of arguments passed to the function
  * during creation. For example pm::div(...args)
- * @param bool $return - should the created string be printed or
- * returned?
+ * @param bool $return - should the created string be printed or returned?
+ * @param array<string> $after - callbacks to execute on the final content 
+ * before it is returned or printed.
+ * 
  */
-handle(string $name, array $args, bool $return = true)
+handle(string $name, array $args, bool $return = true, $after = [])
 ```
 
 **Redefining the `<p>` element**
@@ -267,7 +270,7 @@ use LeviZwannah\PhpMarkup\Facades\Markup as pm;
 
 pm::component(
     name: "p",
-    render: function($specialArgs, $args){
+    render: function($specialArgs, $args, $after = []){
         # add more classes to p
         $classes = $args['class'] ?? "";
         $classes = "custom-p-class $classes custom-p-class-2";
@@ -275,7 +278,7 @@ pm::component(
 
         # you could even put the p in a div by default.
 
-        return pm::handle('p', $args);
+        return pm::handle('p', $args, $after);
     },
     specialArgs: []
 );

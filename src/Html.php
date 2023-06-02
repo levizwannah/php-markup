@@ -40,10 +40,16 @@ class Html{
     {
 
         $return = true;
+        $after = [];
 
         if(isset($arguments['print'])) {
             $return = !$arguments['print'];
             unset($arguments['print']);
+        }
+
+        if(isset($arguments['after'])){
+            $after = $arguments['after'];
+            unset($arguments['after']);
         }
 
         /**
@@ -60,16 +66,16 @@ class Html{
                 unset($arguments[$a]);
             }
 
-            if($return) return $this->components[$name]['render']($special, $arguments);
-            echo $this->components[$name]['render']($special, $arguments);
+            if($return) return $this->components[$name]['render']($special, $arguments, $after);
+            echo $this->components[$name]['render']($special, $arguments, $after);
             return;
         }
 
-        return $this->handle($name, $arguments, $return);
+        return $this->handle($name, $arguments, $return, $after);
 
     }
 
-    public function handle($name, $arguments, $return = true){
+    public function handle($name, $arguments, $return = true, $after = []){
 
         $children = "";
         $attr = "";
@@ -124,6 +130,13 @@ class Html{
         }
 
         $output = "$openTag$children$closingTag";
+
+        /**
+         * Applies the callbacks to the final content
+         */
+        foreach ($after as $func){
+            $output = $func($output);
+        }
 
         if($return) return $output;
 
