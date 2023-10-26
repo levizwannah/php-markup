@@ -1,8 +1,9 @@
 # PHP-Markup
-PHP-Markup is a library that allows you to elegantly write html markup with PHP. The library allows you to make component, composite elements, and even overwrite the default html tag. Imagine if you want every `p` element to have some default class, you can overwrite the normal `p` element using this library to save you much of the work, keeping things clean and elegant.
-
+PHP-Markup is a library that allows you to write HTML markup using PHP directly. The library allows you to make components, composite elements, and even overwrite the default HTML tag. Imagine if you want every `p` element to have some default class, you can overwrite the normal `p` element using this library to save you much of the work, keeping things clean and elegant.
+# requirements
+- PHP version >= 8.0
 # Usage
-You can use this library to write a whole markup or put HTML markup within PHP code without opening and closing the PHP tags.
+You can use this library to write a whole markup or put an HTML markup within PHP code without opening and closing the PHP tags.
 
 # Syntax
 Use the `Markup` Facade which is located in `LeviZwannah\PhpMarkup\Facades` for elegant writing.
