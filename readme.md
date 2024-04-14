@@ -86,7 +86,7 @@ The library is agnostic to html elements, only defining few functions that canno
 
 ## Self-Closing tags
 Tags without children or text in-between their opening and closing tag are self-closing automatically.
-> Note: The library is agnostic to html elements, so if you know a tag should close but has no children, inform the markup engine through the `closing: true` parameter. For example, `script` tags that do not have inner code (but have src).
+> Note: The library is agnostic to html elements, so if you know a tag should close but has no children, inform the markup engine through the `close: true` parameter. For example, `script` tags that do not have inner code (but have src).
 
 ## Special Parameters
 1. `close` - a boolean attribute that tells the library to create a closing tag for the current element. ***The Library will automatically make elements with no inner html self-closing***. This behavior is not good for elements like `script` which could not have any inner content. Hence, to force close an empty element, pass the `close: true` parameter to the element.
