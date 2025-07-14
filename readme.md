@@ -1,3 +1,4 @@
+![Installs](https://img.shields.io/packagist/dt/levizwannah/php-markup)
 # PHP-Markup
 PHP-Markup is a library that allows you to write HTML markup using PHP directly. The library allows you to make components, composite elements, and even overwrite the default HTML tag. Imagine if you want every `p` element to have some default class, you can overwrite the normal `p` element using this library to save you much of the work, keeping things clean and elegant.
 # requirements
