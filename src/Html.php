@@ -106,6 +106,7 @@ class Html{
                 }
 
                 $key = str_replace("_", "-", $key);
+                $key = str_replace("__colon__", ":",  $key);
                 $attr .= " $key=\"$value\"";
                 continue;
             }
