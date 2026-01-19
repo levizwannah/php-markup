@@ -105,8 +105,12 @@ class Html{
                     continue;
                 }
 
-                $key = str_replace("_", "-", $key);
                 $key = str_replace("__colon__", ":",  $key);
+                $key = str_replace("__at__", "@",  $key);
+                $key = str_replace("__hash__", "#",  $key);
+                $key = str_replace("__dollar__", "$",  $key);
+                
+                $key = str_replace("_", "-", $key);
                 $attr .= " $key=\"$value\"";
                 continue;
             }
